@@ -112,6 +112,10 @@ if (process.env.CODEX_HOLD_STDIO_OPEN === "1") {
       encoding: "utf8",
       env: {
         ...process.env,
+        // Keep the regression focused on Codex stdout/stderr forwarding. If
+        // inherited, @actions/core writes final-message to this file instead
+        // of the captured stdout used by these assertions.
+        GITHUB_OUTPUT: undefined,
         PATH: `${tempDir}${path.delimiter}${process.env.PATH ?? ""}`,
         CODEX_CAPTURE_ARGS: capturePath,
         CODEX_HOLD_STDIO_OPEN: holdStdioOpen ? "1" : "0",
